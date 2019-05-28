@@ -1,3 +1,5 @@
+const EOL = require('os').EOL;
+
 Array.prototype.cursorUp = function(elem) {
   this.push(elem);
   this.length > 4 ? this.shift() : null;
@@ -19,6 +21,12 @@ Array.prototype.load = function(callback) {
       return callback(el);
     });
   });
+}
+
+String.prototype.getEOL = function() {
+  return this.match('\r\n') ?
+                '\r\n' : this.match('\n') ?
+                    '\n' : EOL;
 }
 
 // const a = [

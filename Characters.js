@@ -2,7 +2,7 @@ class AbstractFighter {
   constructor(objet) {
     this.name = objet.name;
     this.health = objet.health;
-    this.fullHealth = objet.health;
+    this.fullHealth = objet.fullHealth || objet.health;
     this.strength = objet.strength;
     this.msg = "";
     this.skill = objet.skill;

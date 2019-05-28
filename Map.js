@@ -1,11 +1,14 @@
 require('./Prototypes');
 const fs = require('fs');
-const AreaCreator = require("./AreaCreator")
+const AreaCreator = require("./AreaCreator");
 
 module.exports = class Map {
     constructor(filename) {
-        this.mapGrid = fs.readFileSync(__dirname + `\\${filename}`)
-        .toString().split('\r\n')
+        const allInString = fs.readFileSync(__dirname + `\\${filename}`)
+        .toString();
+        const chariotReturn = allInString.getEOL();
+
+        this.mapGrid = allInString.split(chariotReturn)
         .map(ln => ln.split(""));
 
         console.log(this.mapGrid);

@@ -98,10 +98,6 @@ class Decision {
 // ******************************* tests ********************************
 
 
-function percent(base, actual) { 
-  return (actual / base * 100) % 1 === 0 ? actual / base * 100 : Math.floor(actual / base * 100);
-}
-
 const tree = [
   {
     label: "root",
@@ -161,7 +157,7 @@ function between(array, n) {
   return array[0] <= n && n <= array[1];
 }
 
-const Monster = require('../characters/Characters').Enemy
+const Monster = require('./Characters').Enemy
 
 const enemy = new Monster({ 
   name: "SKELETON", 
@@ -173,7 +169,14 @@ const enemy = new Monster({
   spell: 1,
   dammage: 5,
   skill: 1,
-})
+});
+
+console.log(percent(enemy.fullHealth, enemy.health) + '%');
+
+function percent(base, actual) { 
+  console.log(actual, base, enemy.fullHealth, enemy.health)
+  return (actual / base * 100) % 1 === 0 ? actual / base * 100 : Math.floor(actual / base * 100);
+}
 
 function rooting(enemy, tree) {
   // if (tree[0].label === "leaf") { return enemy[tree.actions]() }
