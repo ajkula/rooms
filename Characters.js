@@ -55,8 +55,8 @@ class AbstractFighter {
     }
   }
   useSkill(enemy) {
-    if (this.scroll > 0) {
-      this.scroll--;
+    if (this.skill > 0) {
+      this.skill--;
       enemy.sethealth(-15)
     }
   }

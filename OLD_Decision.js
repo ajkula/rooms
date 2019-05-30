@@ -41,8 +41,8 @@ class Decision {
             potions: 0,
             actions: [
               {
-                label: "scroll",
-                scroll: 1,
+                label: "skill",
+                skill: 1,
                 actions: [
                   {
                     label: "leaf",
@@ -51,8 +51,8 @@ class Decision {
                 ]
               },
               {
-                label: "scroll",
-                scroll: 0,
+                label: "skill",
+                skill: 0,
                 actions: [
                   {
                     label: "leaf",
@@ -70,8 +70,8 @@ class Decision {
   rooting(tree = this.tree) {
 console.log("TREE", tree)
     if (tree[0].label === "leaf") {
-      console.log("*******************************"); 
       console.log("LEAF ACTIONS: ", tree[0].actions); 
+      console.log("*******************************");
       return this.enemy[tree[0].actions](this.target); 
     }
 
@@ -93,15 +93,14 @@ console.log("TREE", tree)
 
 // ******************************* tests ********************************
 const Monster = require('./Characters').Enemy;
-const enemy = new Monster({ 
+const enemy = new Monster({
   name: "SKELETON", 
-  fullHealth: 40,
-  health: 10,
+  health: Math.min(Math.floor(Math.random() * 15 + 10), 15),
   strength: 15,
-  potions: 0,
+  potions: Math.floor(Math.random() * 3 + 1),
   avoid: 20,
-  scroll: 2,
   dammage: 5,
+  skill: 1
 });
 
 function percent(base, actual) {
@@ -113,6 +112,10 @@ console.log("enemy health", percent(enemy.fullHealth, enemy.health) + '%');
 
 // console.clear()
 const a = new Decision(enemy, enemy)
+console.log();
+a.rooting()
+console.log();
+a.rooting()
 console.log();
 a.rooting()
 console.log();
