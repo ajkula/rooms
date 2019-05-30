@@ -99,6 +99,16 @@ bool ? console.log('\n' + len, index, result) : null;
       { item: "scroll", quantity: Math.floor(Math.random() * 2) + 1, price: Math.floor(Math.random() * 15) + 5, description: "15 Dammage to one enemy" },
       { item: "doll", quantity: Math.floor(Math.random() * 2), price: Math.floor(Math.random() * 15) + 5, description: "Will revive you with 30 HP" },
       { item: "key", quantity: Math.floor(Math.random() * 2 + 1), price: Math.floor(Math.random() * 15) + 5, description: "To open locks, chests" },
+      { item: "moonstone", quantity: Math.floor(Math.random() * 2 + 1), price: Math.floor(Math.random() * 15) + 5, description: "Increase your dammage by 5" },
+    ]})()
+  };
+
+  inventory() {
+    return (function() { return [
+      { item: "potions", quantity: Math.floor(Math.random() * 2) + 1, price: Math.floor(Math.random() * 15) + 5, description: "Heal 20 HP" },
+      { item: "scroll", quantity: Math.floor(Math.random() * 2) + 1, price: Math.floor(Math.random() * 15) + 5, description: "15 Dammage to one enemy" },
+      { item: "doll", quantity: Math.floor(Math.random() * 2), price: Math.floor(Math.random() * 15) + 5, description: "Will revive you with 30 HP" },
+      { item: "key", quantity: Math.floor(Math.random() * 2 + 1), price: Math.floor(Math.random() * 15) + 5, description: "To open locks, chests" },
       { item: "coins", quantity: Math.floor(Math.random() * 5 + 1), price: 0, description: "A handful of silver and copper coins" },
       { item: "moonstone", quantity: Math.floor(Math.random() * 2 + 1), price: Math.floor(Math.random() * 15) + 5, description: "Increase your dammage by 5" },
     ]})()
@@ -115,7 +125,7 @@ bool ? console.log('\n' + len, index, result) : null;
   
   getArea() {
     const context = this.RAE(this.situation).context;
-    const inventory = this.goods().find((e) => { return e.item === this.makeNPCInventoryFromRange(range(100)) });
+    const inventory = this.inventory().find((e) => { return e.item === this.makeNPCInventoryFromRange(range(100)) });
     const item = Object.assign(this.RAE(this.goods()), {context});
     
     return { 

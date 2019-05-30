@@ -52,6 +52,7 @@ class AbstractFighter {
     this.potions--;
     this.health += 20;
     if (this.fullHealth < this.health) this.health = this.fullHealth;
+    this.msg =  this.name + " healed: " + 20 + " health" + '\n' + " " + this.health + " health and " + this.potions + " potions remaining!"
     }
   }
   useSkill(enemy) {
@@ -60,6 +61,7 @@ class AbstractFighter {
       enemy.sethealth(-15)
     }
   }
+  getEvent() { return this.msg; }
 }
 
 class Enemy extends AbstractFighter {
@@ -72,7 +74,7 @@ class Enemy extends AbstractFighter {
     enemy.sethealth((function() {return -Math.ceil(Math.random() * that.dammage)})());
     const {health, lost} = enemy.getState();
     this.msg = lost ? this.name + " won!" : "hit: " + health + " health remaining!"
-  } 
+  }
 }
 
 class Player extends AbstractFighter {
@@ -86,7 +88,7 @@ class Player extends AbstractFighter {
     else enemy.sethealth((function() {return -Math.ceil(Math.random() * that.dammage)})());
     const {health, lost} = enemy.getState();
     this.msg = lost ? this.name + " won!" : "hit: " + health + " health remaining!"
-  } 
+  }
 }
 
 module.exports = { Enemy, Player };

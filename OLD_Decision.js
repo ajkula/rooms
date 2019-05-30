@@ -69,7 +69,8 @@ class Decision {
 
   rooting(tree = this.tree) {
     if (tree[0].label === "leaf") {
-      console.log("LEAF ACTIONS: ", tree[0].actions); 
+      console.log(this.enemy.getEvent());
+      console.log("LEAF ACTIONS: ", tree[0].actions);
       console.log("*******************************");
       return this.enemy[tree[0].actions](this.target); 
     }
