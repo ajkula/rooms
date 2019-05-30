@@ -68,7 +68,6 @@ class Decision {
   }
 
   rooting(tree = this.tree) {
-console.log("TREE", tree)
     if (tree[0].label === "leaf") {
       console.log("LEAF ACTIONS: ", tree[0].actions); 
       console.log("*******************************");
@@ -82,8 +81,8 @@ console.log("TREE", tree)
 
     if (tree[0].label !== "leaf" && tree[0].label  !== "root") {
       console.log("CONDITION:", "(", tree[0].label, ")", this.enemy[tree[0].label], " >= ", tree[0][tree[0].label]);
-      if (this.enemy[tree[0].label] >= tree[0][tree[0].label]) { console.log("TREE 0:", tree[0].actions); this.rooting(tree[0].actions) }
-      else { console.log("TREE 1:", tree[1].actions); this.rooting(tree[1].actions) }
+      if (this.enemy[tree[0].label] >= tree[0][tree[0].label]) { this.rooting(tree[0].actions) }
+      else { this.rooting(tree[1].actions) }
     }
   }
 
