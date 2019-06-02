@@ -1,3 +1,5 @@
+require('./Prototypes');
+
 class Decision {
   constructor(enemy, target) {
     console.log("constructor enemy:", enemy.name, ' HP: ', enemy.health)
@@ -69,10 +71,8 @@ class Decision {
 
   rooting(tree = this.tree) {
     if (tree[0].label === "leaf") {
-      console.log(this.enemy.getEvent());
-      console.log("LEAF ACTIONS: ", tree[0].actions);
-      console.log("*******************************");
-      return this.enemy[tree[0].actions](this.target); 
+      this.enemy.pushEvent(`${this.enemy.name}: [ ${tree[0].actions} ] on ${this.target.name}`);
+      return this.enemy[tree[0].actions](); 
     }
 
     if (tree[0].label  === "root") {
@@ -81,7 +81,6 @@ class Decision {
     }
 
     if (tree[0].label !== "leaf" && tree[0].label  !== "root") {
-      console.log("CONDITION:", "(", tree[0].label, ")", this.enemy[tree[0].label], " >= ", tree[0][tree[0].label]);
       if (this.enemy[tree[0].label] >= tree[0][tree[0].label]) { this.rooting(tree[0].actions) }
       else { this.rooting(tree[1].actions) }
     }
@@ -92,16 +91,20 @@ class Decision {
 }
 
 // ******************************* tests ********************************
+
+const logs = [];
+
 const Monster = require('./Characters').Enemy;
 const enemy = new Monster({
   name: "SKELETON", 
-  health: Math.min(Math.floor(Math.random() * 15 + 10), 15),
+  health: Math.max(Math.floor(Math.random() * 15 + 10), 15),
   strength: 15,
-  potions: Math.floor(Math.random() * 3 + 1),
+  potions: 1,
   avoid: 20,
   dammage: 5,
   skill: 1
-});
+}, logs);
+enemy.setEnemy(enemy)
 
 function percent(base, actual) {
   return (actual / base * 100) % 1 === 0 ?

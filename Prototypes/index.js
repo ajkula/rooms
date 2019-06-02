@@ -1,12 +1,14 @@
 const EOL = require('os').EOL;
 
-Array.prototype.cursorUp = function(elem) {
+// Push a new message in the events log, and keep it 4 length max
+Array.prototype.runCursor = function(elem) {
   this.push(elem);
   this.length > 4 ? this.shift() : null;
-  return this;
+  this.toScreen();
 };
 
-Array.prototype.loadFromArray = function(refArray, predicate = null) {
+// Find an element in a matrix
+Array.prototype.matrixFind = function(refArray, predicate = null) {
   return this.map(ln => { 
     return ln.map(el => {
       let name = !!predicate ? predicate : "value";
@@ -15,14 +17,23 @@ Array.prototype.loadFromArray = function(refArray, predicate = null) {
   });
 }
 
-Array.prototype.load = function(callback) {
-  return this.map(ln => { 
+console.log("*******************************");
+Array.prototype.toScreen = function() { 
+  console.log([...this.map(str => ` - ${str}`),
+    "*******************************"].join('\n')
+  );
+}
+
+// Load each cells from a matrix to a callback
+Array.prototype.forEachCell = function(callback) {
+  return this.map(ln => {
     return ln.map(el => {
       return callback(el);
     });
   });
 }
 
+// Get the End Of Line glyph from the right O/S
 String.prototype.getEOL = function() {
   return this.match('\r\n') ?
                 '\r\n' : this.match('\n') ?
@@ -45,4 +56,4 @@ String.prototype.getEOL = function() {
 //   c: {value: "c"},
 // }
 
-// console.log(a.load(obj));
+// console.log(a.forEachCell(obj));

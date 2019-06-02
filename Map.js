@@ -34,7 +34,7 @@ module.exports = class Map {
         //     c: new AreaCreator("c").getArea(),
         // };
 
-        this.completeMapData = this.mapGrid.load(item => new AreaCreator(item).getArea())
+        this.completeMapData = this.mapGrid.forEachCell(item => new AreaCreator(item).getArea())
         // console.log("completeMapData:", this.completeMapData)
         console.log(`Start: ${this.mapping[this.mapGrid[this.location.y][this.location.x]]}`);
     }

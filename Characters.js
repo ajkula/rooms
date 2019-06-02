@@ -1,5 +1,9 @@
 class AbstractFighter {
-  constructor(objet) {
+  constructor(objet, messager = []) {
+    this.statsList = ["fullHealth", "strength", "avoid"];
+    this.messager = messager;
+    this.enemy = {};
+
     this.name = objet.name;
     this.health = objet.health;
     this.fullHealth = objet.fullHealth || objet.health;
@@ -24,11 +28,13 @@ class AbstractFighter {
       moonstone: Number(this.moonstone)
     }
   }
-  sethealth(value) { 
-    console.log("before: health ", this.health, " dammage " + value)
+  setEnemy(enemy) { this.enemy = enemy; }
+  sethealth(value) {
     this.health += value;
     this.health >= 1 ? null : this.lost = true;
-    console.log("after ", this.health, value)
+    this.msg = this.name + " health: " + (this.health - value) + " ==> " + value + " points!";
+    this.messager.runCursor(this.msg);
+    this.lost ? this.messager.runCursor(this.name + " is DEAD.") : null;
   }
   getState() {
     return { name: this.name, health: this.health, lost: this.lost, strength: this.strength, potions: this.potions, inventory: this.inventory } 
@@ -42,7 +48,22 @@ class AbstractFighter {
     this.inventory.scroll = this.scroll;
     return { inventory: this.inventory };
   }
-  setInventory(item, str) {
+  castSpell() {
+    if (this.scroll > 0) {
+      this.scroll--;
+      this.enemy.sethealth(-Math.floor(Math.random() * 7) - 13);
+    }
+  }
+  logInventory() {
+    let res = [];
+    for (item in this.inventory) {
+      if (this.inventory[item]) {
+        res.push(`${'\n'}${item}: ${this.inventory[item]}`)
+      }
+    }
+    return res.join('');
+  }
+  setInventory(item, str = null) {
     this[item.item] += item.quantity;
     this.inventory[item.item] += item.quantity;
     str === "buy" ? this.coins -= item.price : null;
@@ -52,16 +73,42 @@ class AbstractFighter {
     this.potions--;
     this.health += 20;
     if (this.fullHealth < this.health) this.health = this.fullHealth;
-    this.msg =  this.name + " healed: " + 20 + " health" + '\n' + " " + this.health + " health and " + this.potions + " potions remaining!"
+    this.msg =  this.name + " healed: " + 20 + " HP => " + this.health + " health and " + this.potions + " potions remaining!";
+    this.messager.runCursor(this.msg);
     }
   }
-  useSkill(enemy) {
+  useSkill() {
     if (this.skill > 0) {
       this.skill--;
-      enemy.sethealth(-15)
+      this.enemy.sethealth(-Math.floor(Math.random() * 5) - 10)
     }
   }
+
   getEvent() { return this.msg; }
+  pushEvent(str) { this.messager.runCursor(str) }
+
+  setStats(statName, adjustment = false) {
+    if (this.statsList.includes(statName)) {
+      if (adjustment) {
+        this.msg = `${statName} gets: ${adjustment}`;
+        this.messager.runCursor(this.msg);
+        this[statName] += adjustment;
+      }
+    }
+  }
+  useInventory(itemName) {
+    switch (itemName) {
+      case "potion":
+        this.heal();
+        break;
+      case "key":
+          // this.heal();
+          break;
+      case "scroll":
+        this.castSpell();
+        break;
+    }
+  }
 }
 
 class Enemy extends AbstractFighter {
@@ -69,11 +116,12 @@ class Enemy extends AbstractFighter {
     super(objet);
   }
 
-  attack(enemy) {
+  attack() {
     const that = this;
-    enemy.sethealth((function() {return -Math.ceil(Math.random() * that.dammage)})());
-    const {health, lost} = enemy.getState();
-    this.msg = lost ? this.name + " won!" : "hit: " + health + " health remaining!"
+    this.enemy.sethealth((function() {return -Math.ceil(Math.random() * that.dammage)})());
+    const {health, lost} = this.enemy.getState();
+    this.msg = lost ? this.name + " won!" : "hit: " + health + " health remaining!";
+    this.messager.runCursor(this.msg);
   }
 }
 
@@ -82,12 +130,13 @@ class Player extends AbstractFighter {
     super(objet);
   }
 
-  attack(enemy) {
+  attack() {
     const that = this;
-    if (this.name === "Thieve") enemy.sethealth((function() {return -Math.ceil(Math.random() * that.dammage + Math.random() * that.dammage)})());
-    else enemy.sethealth((function() {return -Math.ceil(Math.random() * that.dammage)})());
-    const {health, lost} = enemy.getState();
-    this.msg = lost ? this.name + " won!" : "hit: " + health + " health remaining!"
+    if (this.name === "Thieve") this.enemy.sethealth((function() {return -Math.ceil(Math.random() * that.dammage + Math.random() * that.dammage)})());
+    else this.enemy.sethealth((function() {return -Math.ceil(Math.random() * that.dammage)})());
+    const {health, lost} = this.enemy.getState();
+    this.msg = lost ? this.name + " won!" : "hit: " + health + " health remaining!";
+    this.messager.runCursor(this.msg);
   }
 }
 

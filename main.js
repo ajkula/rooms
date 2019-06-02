@@ -4,6 +4,10 @@ const Map = new mapClass("roomsDef.txt");
 const readline = require('readline');
 const Playerlist = require('./PlayerList').PlayerList;
 const { Player, Enemy } = require('./Characters');
+const Objects = require('./Constants').Objects;
+const Commands = require('./Constants').Commands;
+
+const CURSOR = [];
 let player = {};
 
 const heroSelection = (heroesSelectionList, hero) => {
@@ -12,7 +16,7 @@ const heroSelection = (heroesSelectionList, hero) => {
             let heroName = heroesSelectionList[i].name;
             let heroObject = Playerlist.find(p => p.name === heroName);
             console.log(`You are a: ${heroName}`);
-            return new Player(heroObject);
+            return new Player(heroObject,CURSOR);
         };
     };
 };
@@ -38,7 +42,7 @@ async function main() {
             case "chest":
                 break;
             case "enemy":
-                enemy = new Enemy(data.enemy);
+                enemy = new Enemy(data.enemy, CURSOR);
                 console.log(JSON.stringify(enemy, null, 2));
                 break;
             case "seller":
@@ -76,3 +80,17 @@ async function start() {
 }
 
 start();
+
+
+
+const Fight = async (player, enemy) => {
+    Objects
+    const decision = new Decision(enemy, player);
+    
+    do {
+      const playerAction = await askQuestion(`You can: ${Commands.list.join(' ')} ${'\n'} items: ${player.logInventory()}${'\n'} ?`);
+      if (Commands.list.includes(playerAction)) {
+        player
+      }
+    } while (!player.lost && !enemy.lost);
+  }
