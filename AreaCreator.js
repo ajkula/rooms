@@ -37,7 +37,7 @@ class AreaCreator {
         name: "ORC", 
         health: Math.min(Math.floor(Math.random() * 50 + 20), 50),
         strength: 30,
-        potions: Math.min(Math.floor(Math.random() * 5 + 1), 2),
+        potions: Math.min(Math.floor(Math.random() * 1), 1),
         avoid: 10,
         dammage: 8,
         skill: 0

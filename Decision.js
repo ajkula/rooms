@@ -81,7 +81,7 @@ class Decision {
     }
 
     if (tree[0].label !== "leaf" && tree[0].label  !== "root") {
-      if (this.enemy[tree[0].label] >= tree[0][tree[0].label]) { this.rooting(tree[0].actions) }
+      if ((this.enemy.inventory[tree[0].label] >= tree[0][tree[0].label]) || ( this.enemy[tree[0].label] >= tree[0][tree[0].label])) { console.log(this.enemy[tree[0].label], tree[0][tree[0].label]); this.rooting(tree[0].actions) }
       else { this.rooting(tree[1].actions) }
     }
   }

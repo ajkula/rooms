@@ -12,20 +12,14 @@ class AbstractFighter {
     this.skill = objet.skill;
     this.lost = false;
     this.avoid = objet.avoid;
-    this.potions = objet.potions;
-    this.scroll = objet.scroll || null;
-    this.doll = objet.doll || null;
-    this.key = objet.key || null;
-    this.coins = objet.coins || null;
     this.dammage = objet.dammage
-    this.moonstone = objet.moonstone || null;
     this.inventory = {
-      potions: this.potions,
-      scroll: Number(this.scroll),
-      doll: Number(this.doll),
-      key: Number(this.key),
-      coins : Number(this.coins), 
-      moonstone: Number(this.moonstone)
+      potions: objet.potions || 0,
+      scroll: objet.scroll || 0,
+      doll: objet.doll || 0,
+      key: objet.key || 0,
+      coins : objet.coins || 0,
+      moonstone: objet.moonstone || 0,
     }
   }
   setEnemy(enemy) { this.enemy = enemy; console.log("enemy:", this.enemy) }
@@ -69,11 +63,11 @@ class AbstractFighter {
     str === "buy" ? this.coins -= item.price : null;
   }
   heal() {
-    if (this.potions > 0) {
-    this.potions--;
+    if (this.inventory.potions > 0) {
+    this.inventory.potions--;
     this.health += 20;
     if (this.fullHealth < this.health) this.health = this.fullHealth;
-    this.msg =  this.name + " healed: " + 20 + " HP => " + this.health + " health and " + this.potions + " potions remaining!";
+    this.msg =  this.name + " healed: " + 20 + " HP => " + this.health + " health and " + this.inventory.potions + " potions remaining!";
     this.messager.runCursor(this.msg);
     }
   }
