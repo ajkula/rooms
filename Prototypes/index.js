@@ -3,7 +3,7 @@ const EOL = require('os').EOL;
 // Push a new message in the events log, and keep it 4 length max
 Array.prototype.runCursor = function(elem) {
   this.push(elem);
-  this.length > 4 ? this.shift() : null;
+  this.length > 6 ? this.shift() : null;
   this.toScreen();
 };
 
@@ -17,7 +17,6 @@ Array.prototype.matrixFind = function(refArray, predicate = null) {
   });
 }
 
-console.log("*******************************");
 Array.prototype.toScreen = function() { 
   console.log([...this.map(str => ` - ${str}`),
     "*******************************"].join('\n')
@@ -36,8 +35,8 @@ Array.prototype.forEachCell = function(callback) {
 // Get the End Of Line glyph from the right O/S
 String.prototype.getEOL = function() {
   return this.match('\r\n') ?
-                '\r\n' : this.match('\n') ?
-                    '\n' : EOL;
+    '\r\n' : this.match('\n') ?
+      '\n' : EOL;
 }
 
 // const a = [

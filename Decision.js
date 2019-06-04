@@ -71,7 +71,7 @@ class Decision {
 
   rooting(tree = this.tree) {
     if (tree[0].label === "leaf") {
-      this.enemy.pushEvent(`${this.enemy.name}: [ ${tree[0].actions} ] on ${this.target.name}`);
+      this.enemy.pushEvent(`${this.enemy.name}: [ ${tree[0].actions} ]${tree[0].actions === "attack" ? ` on ${this.target.name}` : ''}`);
       return this.enemy[tree[0].actions](); 
     }
 
@@ -92,40 +92,40 @@ class Decision {
 
 // ******************************* tests ********************************
 
-const logs = [];
+// const logs = [];
 
-const Monster = require('./Characters').Enemy;
-const enemy = new Monster({
-  name: "SKELETON", 
-  health: Math.max(Math.floor(Math.random() * 15 + 10), 15),
-  strength: 15,
-  potions: 1,
-  avoid: 20,
-  dammage: 5,
-  skill: 1
-}, logs);
-enemy.setEnemy(enemy)
+// const Monster = require('./Characters').Enemy;
+// const enemy = new Monster({
+//   name: "SKELETON", 
+//   health: Math.max(Math.floor(Math.random() * 15 + 10), 15),
+//   strength: 15,
+//   potions: 1,
+//   avoid: 20,
+//   dammage: 5,
+//   skill: 1
+// }, logs);
+// enemy.setEnemy(enemy)
 
-function percent(base, actual) {
-  return (actual / base * 100) % 1 === 0 ?
-   actual / base * 100 :
-   Math.floor(actual / base * 100);
-}
-console.log("enemy health", percent(enemy.fullHealth, enemy.health) + '%');
+// function percent(base, actual) {
+//   return (actual / base * 100) % 1 === 0 ?
+//    actual / base * 100 :
+//    Math.floor(actual / base * 100);
+// }
+// console.log("enemy health", percent(enemy.fullHealth, enemy.health) + '%');
 
-// console.clear()
-const a = new Decision(enemy, enemy)
-console.log();
-a.rooting()
-console.log();
-a.rooting()
-console.log();
-a.rooting()
-console.log();
-a.rooting()
-console.log();
-a.rooting()
-console.log();
-a.rooting()
+// // console.clear()
+// const a = new Decision(enemy, enemy)
+// console.log();
+// a.rooting()
+// console.log();
+// a.rooting()
+// console.log();
+// a.rooting()
+// console.log();
+// a.rooting()
+// console.log();
+// a.rooting()
+// console.log();
+// a.rooting()
 
 module.exports = Decision;

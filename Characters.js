@@ -1,5 +1,5 @@
 class AbstractFighter {
-  constructor(objet, messager = []) {
+  constructor(objet, messager) {
     this.statsList = ["fullHealth", "strength", "avoid"];
     this.messager = messager;
     this.enemy = {};
@@ -28,7 +28,7 @@ class AbstractFighter {
       moonstone: Number(this.moonstone)
     }
   }
-  setEnemy(enemy) { this.enemy = enemy; }
+  setEnemy(enemy) { this.enemy = enemy; console.log("enemy:", this.enemy) }
   sethealth(value) {
     this.health += value;
     this.health >= 1 ? null : this.lost = true;
@@ -56,7 +56,7 @@ class AbstractFighter {
   }
   logInventory() {
     let res = [];
-    for (item in this.inventory) {
+    for (let item in this.inventory) {
       if (this.inventory[item]) {
         res.push(`${'\n'}${item}: ${this.inventory[item]}`)
       }
@@ -102,7 +102,7 @@ class AbstractFighter {
         this.heal();
         break;
       case "key":
-          // this.heal();
+          // this.openChest(); -- to do
           break;
       case "scroll":
         this.castSpell();
@@ -112,22 +112,22 @@ class AbstractFighter {
 }
 
 class Enemy extends AbstractFighter {
-  constructor(objet) {
-    super(objet);
+  constructor(objet, messager) {
+    super(objet, messager);
   }
 
   attack() {
     const that = this;
     this.enemy.sethealth((function() {return -Math.ceil(Math.random() * that.dammage)})());
     const {health, lost} = this.enemy.getState();
-    this.msg = lost ? this.name + " won!" : "hit: " + health + " health remaining!";
+    this.msg = lost ? this.name + " won!" : ` ${this.name} hit ${this.enemy.name}: ${health} health remaining!`;
     this.messager.runCursor(this.msg);
   }
 }
 
 class Player extends AbstractFighter {
-  constructor(objet) {
-    super(objet);
+  constructor(objet, messager) {
+    super(objet, messager);
   }
 
   attack() {
@@ -135,7 +135,7 @@ class Player extends AbstractFighter {
     if (this.name === "Thieve") this.enemy.sethealth((function() {return -Math.ceil(Math.random() * that.dammage + Math.random() * that.dammage)})());
     else this.enemy.sethealth((function() {return -Math.ceil(Math.random() * that.dammage)})());
     const {health, lost} = this.enemy.getState();
-    this.msg = lost ? this.name + " won!" : "hit: " + health + " health remaining!";
+    this.msg = lost ? this.name + " won!" : ` ${this.name} hit ${this.enemy.name}: ${health} health remaining!`;
     this.messager.runCursor(this.msg);
   }
 }
