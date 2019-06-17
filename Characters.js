@@ -22,7 +22,7 @@ class AbstractFighter {
       moonstone: objet.moonstone || 0,
     }
   }
-  setEnemy(enemy) { this.enemy = enemy; console.log("enemy:", this.enemy) }
+  setEnemy(enemy) { this.enemy = enemy; console.log("enemy:", this.enemy.name) }
   sethealth(value) {
     this.health += value;
     this.health >= 1 ? null : this.lost = true;
@@ -41,6 +41,14 @@ class AbstractFighter {
     this.inventory.potions = this.potions;
     this.inventory.scroll = this.scroll;
     return { inventory: this.inventory };
+  }
+  addInventory(source) {
+    let res = "";
+    for (let item in source.inventory) {
+      this.inventory[item] += source.inventory[item];
+      source.inventory[item] ? res.push(`${item}: +${source.inventory[item]}`) : null;
+    }
+    res.length > 0 ? this.messager.runCursor(res.join(' ')) : null;
   }
   castSpell() {
     if (this.scroll > 0) {
@@ -126,10 +134,16 @@ class Player extends AbstractFighter {
 
   attack() {
     const that = this;
-    if (this.name === "Thieve") this.enemy.sethealth((function() {return -Math.ceil(Math.random() * that.dammage + Math.random() * that.dammage)})());
-    else this.enemy.sethealth((function() {return -Math.ceil(Math.random() * that.dammage)})());
+    let dammages = 0;
+    if (this.name === "Thieve") {
+      dammages = (function() {return -Math.ceil(Math.random() * that.dammage + Math.random() * that.dammage)})();
+      this.enemy.sethealth(dammages); 
+    } else {
+      dammages = (function() {return -Math.ceil(Math.random() * that.dammage)})();
+      this.enemy.sethealth(dammages);
+    }
     const {health, lost} = this.enemy.getState();
-    this.msg = lost ? this.name + " won!" : ` ${this.name} hit ${this.enemy.name}: ${health} health remaining!`;
+    this.msg = lost ? this.name + " won!" : ` ${this.name} hit ${this.enemy.name}: dammages: ${dammages} / ${health} health remaining!`;
     this.messager.runCursor(this.msg);
   }
 }

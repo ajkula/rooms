@@ -11,7 +11,7 @@ module.exports = class Map {
         this.mapGrid = allInString.split(chariotReturn)
         .map(ln => ln.split(""));
 
-        console.log(this.mapGrid);
+        console.log(this.mapGrid.map(l => l.join(' ')));
 
         this.maxY = this.mapGrid.length - 1
         this.maxX = this.mapGrid[0].length - 1

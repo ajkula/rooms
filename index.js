@@ -5,6 +5,8 @@ const readline = require('readline');
 const Playerlist = require('./PlayerList').PlayerList;
 const Decision = require('./Decision');
 const { Player, Enemy } = require('./Characters');
+const ContextDisplay = require('./display/ContextDisplay').ContextDisplay;
+
 const Objects = require('./Constants').Objects;
 const Commands = require('./Constants').Commands;
 const { attack, skill, use } = require('./Constants');
@@ -26,6 +28,7 @@ const heroSelection = (heroesSelectionList, hero) => {
 
 const makeInputCases = name => [ name, name.substring(0,1), name.toLowerCase(), name.substring(0,1).toLowerCase() ];
 const makeSelectionObjects = Playerlist => Playerlist.map(h => { return { name: h.name, values: makeInputCases(h.name) } });
+
 function askQuestion(query) {
     const rl = readline.createInterface({
         input: process.stdin,
@@ -61,25 +64,32 @@ async function main() {
     // };
 
     // console.clear();
-    console.log(Map.readMap());
+    // console.log(Map.readMap());
+    // console.log(Map.readMap());
     // console.log(Map.getLocation().data.place);
     // console.log(JSON.stringify(Map.getLocation().data, null, 2));
 
     // context listener here...
     // contextListener(Map.getLocation().data);
     let data = Map.getLocation().data;
-    
+    let contextDisplay = {};
+
     switch (data.context) {
       case "chest":
+        contextDisplay = new ContextDisplay(Map);
+        contextDisplay.Render();
         break;
+
       case "enemy":
+        contextDisplay = new ContextDisplay(Map);
+        contextDisplay.Render();
         enemy = new Enemy(data.enemy, CURSOR);
         enemy.setEnemy(player)
         const decision = new Decision(enemy, player);
-        console.log("player:", player)
+        // console.log("player:", player)
         player.setEnemy(enemy);
         do {
-          const playerAction = await askQuestion(`You can: ${Commands.list.map(e => `[ ${e} ]`).join(' ')} ${'\n'} items: ${player.logInventory()}${'\n'} ? `);
+          const playerAction = await askQuestion(`You can: ${Commands.list.map(e => `[ ${e}${!isNaN(player[e]) ? `(${player[e]})` : ''} ]`).join(' ')} ${'\n'} items: ${player.logInventory()}${'\n'} ? `);
           const [action, param] = playerAction.split(' ');
           if (Commands.list.includes(action)) {
             console.log(action, param ? param : '');
@@ -88,10 +98,17 @@ async function main() {
           
           if (!enemy.lost) { decision.rooting(); }
         } while (!player.lost && !enemy.lost);
+        if (enemy.lost) { player.addInventory(data.goods.inventory); }
         break;
+
       case "seller":
+        contextDisplay = new ContextDisplay(Map);
+        contextDisplay.Render();
         break;
+
       case "ghost":
+        contextDisplay = new ContextDisplay(Map);
+        contextDisplay.Render();
         break;
   }
 
