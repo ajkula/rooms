@@ -2,12 +2,10 @@ require('./Prototypes');
 
 class Decision {
   constructor(enemy, target) {
-    console.log("constructor enemy:", enemy.name, ' HP: ', enemy.health)
-    console.log("constructor target:", target.name, ' HP: ', enemy.health)
+    console.log(" enemy:", enemy.name, ' HP: ', enemy.health)
+    console.log(" player:", target.name, ' HP: ', target.health, '\n')
     this.enemy = enemy;
     this.target = target;
-    console.log("constructor this.enemy:", this.enemy.name, ' HP: ', this.enemy.health)
-    console.log("constructor this.target:", this.target.name, ' HP: ', this.enemy.health)
     // this.fullHealth = enemy.fullHealth;
     // this.health = enemy.health;
     // this.strength = enemy.strength;

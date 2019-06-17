@@ -22,7 +22,7 @@ class AbstractFighter {
       moonstone: objet.moonstone || 0,
     }
   }
-  setEnemy(enemy) { this.enemy = enemy; console.log("enemy:", this.enemy.name) }
+  setEnemy(enemy) { this.enemy = enemy; }
   sethealth(value) {
     this.health += value;
     this.health >= 1 ? null : this.lost = true;
